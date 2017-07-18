@@ -31,7 +31,7 @@ public class ChatApplication {
     Integer startupLoadLastMessagesCount = 20;
 
     private UserOutDTOMessage convertFromChatMessage(ChatMessage chatMessage) {
-        String stamp = new SimpleDateFormat("HH:mm:ss D/M/Y").format(chatMessage.getStamp());
+        String stamp = new SimpleDateFormat("HH:mm:ss dd/M/yyyy").format(chatMessage.getStamp());
         return new UserOutDTOMessage(
                 chatMessage.getId().toString(),
                 !chatMessage.getTo().isEmpty(),
