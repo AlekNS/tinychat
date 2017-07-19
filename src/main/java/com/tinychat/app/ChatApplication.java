@@ -41,16 +41,28 @@ public class ChatApplication {
         );
     }
 
+    /**
+     * Toggle user connection state.
+     * @param toggleUserConnectionCommand
+     * @return
+     */
     public boolean execute(ToggleUserConnectionCommand toggleUserConnectionCommand) {
         User user = userRepository.findById(toggleUserConnectionCommand.getUsername());
         if (toggleUserConnectionCommand.isConnected() && user == null) {
             userRepository.save(new User(toggleUserConnectionCommand.getUsername()));
+            return true;
         } else if (user != null) {
             userRepository.remove(user);
+            return true;
         }
         return false;
     }
 
+    /**
+     * Send public or private message
+     * @param sendMessageCommand
+     * @return
+     */
     public boolean execute(SendMessageCommand sendMessageCommand) {
         User user = userRepository.findById(sendMessageCommand.getFromUsername());
         List<User> users = Collections.emptyList();
@@ -79,16 +91,30 @@ public class ChatApplication {
         return true;
     }
 
+    /**
+     * Send to refresh list of active users.
+     * @param refreshUserListCommand
+     * @return
+     */
     public boolean execute(RefreshUserListCommand refreshUserListCommand) {
         List<User> users = userRepository.findAll();
         simpMessagingTemplate.convertAndSend("/topic/users", users);
         return true;
     }
 
+    /**
+     * Get all active users.
+     * @return
+     */
     public List<User> queryAllActiveUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Get last messages.
+     * @param username
+     * @return
+     */
     public List<UserOutDTOMessage> queryLastMessagesForUsername(String username) {
         User user = userRepository.findById(username);
         if (user == null) {
