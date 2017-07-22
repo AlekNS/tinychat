@@ -1,6 +1,6 @@
-package com.tinychat.app.commands;
+package com.tinychat.app.chat.commands;
 
-import com.tinychat.domain.model.User;
+import org.springframework.util.Assert;
 
 public class ToggleUserConnectionCommand {
     private boolean isConnected;
@@ -8,7 +8,7 @@ public class ToggleUserConnectionCommand {
 
     public ToggleUserConnectionCommand(boolean isConnected, String username) {
         this.isConnected = isConnected;
-        this.username = username;
+        this.setUsername(username);
     }
 
     public boolean isConnected() {
@@ -17,5 +17,10 @@ public class ToggleUserConnectionCommand {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        Assert.hasLength(username,"username can't be empty");
+        this.username = username;
     }
 }

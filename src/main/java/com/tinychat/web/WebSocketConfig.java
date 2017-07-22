@@ -20,7 +20,7 @@ import java.security.Principal;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
-    class MyChannelInterceptorAdapter extends ChannelInterceptorAdapter {
+    private class AuthChannelInterceptorAdapter extends ChannelInterceptorAdapter {
 
         @Override
         public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -28,10 +28,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                     MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
             if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                String username = accessor.getLogin();
+                final String username = accessor.getLogin(); // explicit final (may be omitted)
                 if (username != null) {
-                    Principal user = () -> username;
-                    accessor.setUser(user);
+                    accessor.setUser(() -> username);
                 }
             }
 
@@ -41,7 +40,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration config) {
-        config.setInterceptors(new MyChannelInterceptorAdapter());
+        config.setInterceptors(new AuthChannelInterceptorAdapter());
     }
 
     @Override

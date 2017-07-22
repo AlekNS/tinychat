@@ -1,5 +1,7 @@
 package com.tinychat.domain.model;
 
+import org.springframework.util.Assert;
+
 /**
  * Chat user
  */
@@ -11,11 +13,15 @@ public class User {
     }
 
     public User(String username) {
-        this.username = username;
+        this.setUsername(username);
     }
 
     public String getUsername() {
         return username;
     }
 
+    private void setUsername(String username) {
+        Assert.hasLength(username, "User must have valid not empty username");
+        this.username = username;
+    }
 }

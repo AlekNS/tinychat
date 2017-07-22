@@ -1,4 +1,4 @@
-package com.tinychat.app.commands;
+package com.tinychat.app.chat.commands;
 
 public class RefreshUserListCommand {
 }

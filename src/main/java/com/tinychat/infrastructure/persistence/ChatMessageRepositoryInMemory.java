@@ -9,43 +9,31 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 public class ChatMessageRepositoryInMemory implements IChatMessageRepository {
     private ConcurrentLinkedDeque<ChatMessage> repository;
-    private AtomicLong counter;
+    private AtomicLong idCounter;
 
     @Value("${app.repository.chatMessages.inMemory.maxStorageSize}")
     private Integer maxStorageSize = 1024;
 
     ChatMessageRepositoryInMemory() {
         repository = new ConcurrentLinkedDeque<>();
-        counter = new AtomicLong(0);
+        idCounter = new AtomicLong(0);
     }
 
     public Long generateId() {
-        return this.counter.incrementAndGet();
+        return this.idCounter.incrementAndGet();
     }
 
     @Override
-    public List<ChatMessage> findAllForUser(User user, int lastCount) {
-        ArrayList<ChatMessage> result = new ArrayList<>();
-
-        for(ChatMessage chatMessage : repository) {
-            List<User> toUsers = chatMessage.getTo();
-
-            // hide private messages
-            if (toUsers != null && toUsers.size() > 0 && !toUsers.contains(user)) {
-                continue;
-            }
-
-            // limit last messages
-            if (lastCount-- < 0) {
-                break;
-            }
-
-            result.add(chatMessage);
-        }
+    public List<ChatMessage> findAllForUser(final User user, int lastCount) {
+        List<ChatMessage> result = repository.stream()
+                .filter((chatMessage -> chatMessage.getTo().size() == 0 || chatMessage.getTo().contains(user)))
+                .limit(lastCount)
+                .collect(Collectors.toList());
 
         Collections.reverse(result);
 
@@ -53,20 +41,18 @@ public class ChatMessageRepositoryInMemory implements IChatMessageRepository {
     }
 
     @Override
-    public ChatMessage save(ChatMessage chatMessage) {
+    public ChatMessage save(ChatMessage originalChatMessage) {
         // stupid removing of old messages
         if (repository.size() >= maxStorageSize) {
             repository.pollLast();
         }
 
-        Long id = this.generateId();
-
-        chatMessage = new ChatMessage(
-                id,
-                chatMessage.getStamp(),
-                chatMessage.getFrom(),
-                chatMessage.getTo(),
-                chatMessage.getMessage()
+        ChatMessage chatMessage = new ChatMessage(
+                this.generateId(),
+                originalChatMessage.getStamp(),
+                originalChatMessage.getFrom(),
+                originalChatMessage.getTo(),
+                originalChatMessage.getMessage()
         );
 
         repository.addFirst(chatMessage);
