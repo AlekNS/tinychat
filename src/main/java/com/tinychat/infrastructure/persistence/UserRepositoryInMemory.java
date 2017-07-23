@@ -2,6 +2,7 @@ package com.tinychat.infrastructure.persistence;
 
 import com.tinychat.domain.model.IUserRepository;
 import com.tinychat.domain.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,10 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Repository
+@Qualifier("UserRepositoryInMemory")
 public class UserRepositoryInMemory implements IUserRepository {
     private ConcurrentMap<String, User> repository;
 
-    UserRepositoryInMemory() {
+    public UserRepositoryInMemory() {
         repository = new ConcurrentHashMap<>();
     }
 

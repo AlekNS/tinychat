@@ -3,6 +3,7 @@ package com.tinychat.infrastructure.persistence;
 import com.tinychat.domain.model.ChatMessage;
 import com.tinychat.domain.model.IChatMessageRepository;
 import com.tinychat.domain.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
+@Qualifier("ChatMessageRepositoryInMemory")
 public class ChatMessageRepositoryInMemory implements IChatMessageRepository {
     private ConcurrentLinkedDeque<ChatMessage> repository;
     private AtomicLong idCounter;
@@ -19,7 +21,7 @@ public class ChatMessageRepositoryInMemory implements IChatMessageRepository {
     @Value("${app.repository.chatMessages.inMemory.maxStorageSize}")
     private Integer maxStorageSize = 1024;
 
-    ChatMessageRepositoryInMemory() {
+    public ChatMessageRepositoryInMemory() {
         repository = new ConcurrentLinkedDeque<>();
         idCounter = new AtomicLong(0);
     }

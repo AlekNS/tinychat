@@ -18,7 +18,7 @@ public class WSSessionListener {
     private ChatApplicationFacade chatApplication;
 
     @EventListener
-    public void handleSessionConnectEvent(SessionConnectedEvent sessionConnectedEvent) {
+    public void handleSessionConnectedEvent(SessionConnectedEvent sessionConnectedEvent) {
         String username = this.getUsername(sessionConnectedEvent.getUser());
         if (username == null) {
             return;

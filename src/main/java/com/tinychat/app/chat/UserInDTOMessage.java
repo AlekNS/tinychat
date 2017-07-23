@@ -2,6 +2,7 @@ package com.tinychat.app.chat;
 
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UserInDTOMessage {
@@ -31,8 +32,7 @@ public class UserInDTOMessage {
     }
 
     private void setTo(List<String> to) {
-        Assert.notNull(to, "Parameter 'to' shouldn't be null");
-        this.to = to;
+        this.to = to == null ? Collections.emptyList() : to;
     }
 
 }

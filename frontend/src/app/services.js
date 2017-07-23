@@ -67,8 +67,8 @@ class WebSocketService {
      * Request data.
      */
     retrieveChatData() {
-        this.client.send('/chat/users', {}, '');
-        this.client.send('/chat/messages/last', {}, '');
+        setTimeout(() => this.client.send('/chat/users', {}, ''), 10);
+        setTimeout(() => this.client.send('/chat/messages/last', {}, ''), 20);
     }
 
     /**
@@ -96,7 +96,7 @@ class WebSocketService {
      * @param err
      */
     onError(err) {
-        console.log(err);
+        (console.error || console.log)(err);
         this.reduxDispatch(setServerConnection('error'));
     }
 

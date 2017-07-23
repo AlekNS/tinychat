@@ -68,7 +68,6 @@ export function chatReducer(state = {}, action) {
                 messages: action.messages.concat(state.messages)
             };
         case RECEIVE_MESSAGES:
-            console.log(action, action.messages)
             return {
                 ...state,
                 messages: state.messages.concat(action.messages)
