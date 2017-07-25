@@ -1,6 +1,6 @@
 package com.tinychat.app.chat.quries;
 
-public class LastMessagesForUsernameQuery {
+final public class LastMessagesForUsernameQuery {
     private String username;
 
     public LastMessagesForUsernameQuery(String username) {

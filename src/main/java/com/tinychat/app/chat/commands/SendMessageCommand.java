@@ -3,7 +3,7 @@ package com.tinychat.app.chat.commands;
 import com.tinychat.app.chat.UserInDTOMessage;
 import org.springframework.util.Assert;
 
-public class SendMessageCommand {
+final public class SendMessageCommand {
 
     private String fromUsername;
     private UserInDTOMessage userInDTOMessage;

@@ -2,7 +2,7 @@ package com.tinychat.app.chat.commands;
 
 import org.springframework.util.Assert;
 
-public class ToggleUserConnectionCommand {
+final public class ToggleUserConnectionCommand {
     private boolean isConnected;
     private String username;
 
