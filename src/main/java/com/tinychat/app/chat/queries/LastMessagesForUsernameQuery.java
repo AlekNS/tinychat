@@ -1,4 +1,4 @@
-package com.tinychat.app.chat.quries;
+package com.tinychat.app.chat.queries;
 
 final public class LastMessagesForUsernameQuery {
     private String username;

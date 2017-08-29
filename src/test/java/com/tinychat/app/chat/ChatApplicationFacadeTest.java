@@ -2,8 +2,8 @@ package com.tinychat.app.chat;
 
 import com.tinychat.app.chat.commands.SendMessageCommand;
 import com.tinychat.app.chat.commands.ToggleUserConnectionCommand;
-import com.tinychat.app.chat.quries.AllActiveUsersQuery;
-import com.tinychat.app.chat.quries.LastMessagesForUsernameQuery;
+import com.tinychat.app.chat.queries.AllActiveUsersQuery;
+import com.tinychat.app.chat.queries.LastMessagesForUsernameQuery;
 import com.tinychat.domain.model.IChatMessageRepository;
 import com.tinychat.domain.model.IUserRepository;
 import com.tinychat.domain.model.User;
